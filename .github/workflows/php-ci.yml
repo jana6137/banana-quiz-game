@@ -1,0 +1,127 @@
+# .github/workflows/php-ci.yml
+name: PHP CI - Banana Quiz Game
+
+on:
+  # Trigger on push to main or develop branches
+  push:
+    branches: [ main, develop ]
+  # Trigger on pull requests to main branch
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Main build and validation job
+  build:
+    # Run on Ubuntu latest environment
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Step 1: Checkout the code from repository
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+      
+    # Step 2: Set up PHP environment
+    - name: 🐘 Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'  # Compatible with your PHP code
+        tools: composer  # Optional: if you add Composer later
+        
+    # Step 3: Validate PHP syntax in all PHP files
+    - name: 🔍 Validate PHP Syntax
+      run: |
+        echo "Checking PHP syntax..."
+        find . -name "*.php" -type f | while read file; do
+          echo "Checking: $file"
+          php -l "$file" || exit 1
+        done
+        echo "✅ All PHP files have valid syntax"
+        
+    # Step 4: Check for JavaScript syntax errors
+    - name: 🔧 Validate JavaScript Syntax
+      run: |
+        echo "Checking JavaScript syntax..."
+        find . -name "*.js" -type f -not -path "./node_modules/*" | while read file; do
+          echo "Checking: $file"
+          node --check "$file" || exit 1
+        done
+        echo "✅ All JavaScript files have valid syntax"
+        
+    # Step 5: Check HTML files for basic structure
+    - name: 🌐 Validate HTML Structure
+      run: |
+        echo "Checking HTML files for basic structure..."
+        find . -name "*.html" -type f | while read file; do
+          echo "Checking: $file"
+          # Basic check for HTML structure
+          if ! grep -q "<!DOCTYPE html>" "$file"; then
+            echo "❌ $file might be missing proper DOCTYPE"
+            exit 1
+          fi
+          if ! grep -q "<html" "$file"; then
+            echo "❌ $file might be missing html tag"
+            exit 1
+          fi
+        done
+        echo "✅ All HTML files have basic structure"
+        
+    # Step 6: Check for any broken internal links
+    - name: 🔗 Check Internal Links
+      run: |
+        echo "Checking for broken internal links..."
+        # This checks if referenced PHP/HTML files exist
+        find . -name "*.html" -o -name "*.php" | while read file; do
+          echo "Checking links in: $file"
+          # Extract href and src attributes and check if files exist
+          grep -oE '(href|src|action)="[^"]*"' "$file" | sed 's/.*="\([^"]*\)".*/\1/' | while read link; do
+            if [[ $link == /* ]] || [[ $link == .* ]] && [[ ! $link =~ ^http ]]; then
+              # Remove query parameters for file existence check
+              clean_link=$(echo "$link" | sed 's/\?.*//')
+              if [ ! -f ".$clean_link" ] && [ ! -f "$clean_link" ]; then
+                echo "⚠️  Warning: Possible broken link in $file: $link"
+              fi
+            fi
+          done
+        done
+        
+    # Step 7: Security check - Look for common issues
+    - name: 🔒 Basic Security Scan
+      run: |
+        echo "Running basic security checks..."
+        # Check for hardcoded passwords
+        if grep -r "password.*=" . --include="*.php" --include="*.js" | grep -v "db.php" | grep -v "//" | grep -v "password_verify"; then
+          echo "⚠️  Warning: Possible hardcoded passwords found"
+        fi
+        
+        # Check db.php for potential issues
+        if [ -f "php/db.php" ]; then
+          echo "Checking database configuration..."
+          if grep -q "root.*''" "php/db.php"; then
+            echo "ℹ️  Note: Using default MySQL credentials - consider environment variables for production"
+          fi
+        fi
+        
+    # Step 8: File structure validation
+    - name: 📁 Validate Project Structure
+      run: |
+        echo "Validating project structure..."
+        # Check if essential files exist
+        essential_files=(
+          "index.html"
+          "login.html" 
+          "dashboard.html"
+          "game.html"
+          "php/db.php"
+          "php/login.php"
+          "css/style.css"
+        )
+        
+        for file in "${essential_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Missing essential file: $file"
+            exit 1
+          else
+            echo "✅ Found: $file"
+          fi
+        done
+        echo "✅ Project structure is valid"

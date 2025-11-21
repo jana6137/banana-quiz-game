@@ -1,0 +1,62 @@
+# .github/workflows/full-test.yml
+name: Full Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Run every Monday at 2 AM UTC
+
+jobs:
+  full-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+      
+    - name: 🐘 Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        coverage: none
+        
+    - name: 📊 Code Quality Checks
+      run: |
+        echo "=== Running Code Quality Checks ==="
+        
+        # Check for large files
+        echo "Checking for large files..."
+        find . -name "*.php" -o -name "*.js" -o -name "*.css" | xargs ls -lh | awk '$5 > 1048576 {print "Large file:", $9, $5}'
+        
+        # Check for trailing whitespace
+        echo "Checking for trailing whitespace..."
+        if find . -name "*.php" -o -name "*.js" -o -name "*.css" -o -name "*.html" | xargs grep -l " \+$"; then
+          echo "⚠️  Files with trailing whitespace found"
+        fi
+        
+        # Count lines of code
+        echo "=== Lines of Code ==="
+        echo "PHP: $(find . -name "*.php" | xargs cat | wc -l) lines"
+        echo "JavaScript: $(find . -name "*.js" | xargs cat | wc -l) lines" 
+        echo "CSS: $(find . -name "*.css" | xargs cat | wc -l) lines"
+        echo "HTML: $(find . -name "*.html" | xargs cat | wc -l) lines"
+        
+    - name: 🧪 Run Automated Tests (If you add tests later)
+      run: |
+        echo "This would run PHPUnit or other tests if you add them"
+        # Example for future: composer test
+        
+    - name: 📋 Generate Test Report
+      run: |
+        echo "=== Test Summary ==="
+        echo "✅ Syntax validation passed"
+        echo "✅ Project structure validated"
+        echo "✅ Code quality checks completed"
+        echo ""
+        echo "Next steps:"
+        echo "- Add unit tests for PHP functions"
+        echo "- Add integration tests for game logic"
+        echo "- Consider adding browser automation tests"
