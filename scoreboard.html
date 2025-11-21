@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Banana Quiz - Scoreboard</title>
+  <link rel="stylesheet" href="css/style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+
+  <!-- Page header -->
+  <header>
+    <h1>🍌 Banana Quiz Scoreboard</h1>
+    <p>Here are your results from the game. Compare your performance and aim higher next time!</p>
+  </header>
+
+  <!-- Main scoreboard container -->
+  <main class="scoreboard-container">
+
+    <!-- Section title -->
+    <section class="scoreboard-section">
+      <h2>Player Statistics</h2>
+
+      <!-- Table showing player stats -->
+      <table class="scoreboard-table" border="1" cellpadding="10" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Statistic</th> <!--Version Control-->
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Player Name:</td>
+            <td id="playerName">Loading...</td> <!-- Placeholder until JS updates -->
+          </tr>
+          <tr>
+            <td>Highest Score:</td>
+            <td id="highScore">Loading...</td> <!-- Placeholder until JS updates -->
+          </tr>
+          <tr>
+            <td>Lowest Score:</td>
+            <td id="lowScore">Loading...</td> <!-- Placeholder until JS updates -->
+          </tr>
+          <tr>
+            <td>Correct Answers:</td>
+            <td id="correctCount">Loading...</td> <!-- Placeholder until JS updates -->
+          </tr>
+          <tr>
+            <td>Wrong Answers:</td>
+            <td id="wrongCount">Loading...</td> <!-- Placeholder until JS updates -->
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Trophy image for visual effect -->
+    <section class="trophy-section">
+      <h3>🏆 Congratulations!</h3>
+      <img src="images/trophy.png" alt="Golden Trophy" class="trophy-img">
+      <p>You have completed the Banana Quiz challenge. Keep practicing to improve your score!</p>
+    </section>
+
+    <!-- Navigation buttons -->
+    <section class="navigation-section">
+      <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+      <button onclick="window.location.href='game.html'">Play Again</button>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Banana Quiz Game | Designed for fun and learning</p>
+  </footer>
+
+  <!-- JavaScript file for fetching scoreboard data -->
+  <script src="js/dashboard.js"></script>
+
+  <!-- JavaScript to fetch and display scores -->
+  <script>
+    window.onload = function () {
+      // ✅ Fetch scores from backend PHP file
+      fetch('php/get_scores.php') // ✅ Adjusted path based on folder structure
+        .then(response => {
+          // ✅ Check if network response is OK
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          console.log("Raw response:", response); // ✅ Debug: see response object
+          return response.json(); // ✅ Parse JSON response into JS object
+        })
+        .then(data => {
+          console.log("Parsed data:", data); // ✅ Debug: see parsed data
+
+          // ✅ Check if backend returned success
+          if (data.status === "success") {
+            // ✅ Use statistics from backend if available (more efficient)
+            if (data.statistics) {
+              const stats = data.statistics;
+              
+              // ✅ Update scoreboard table with pre-calculated statistics
+              document.getElementById('playerName').textContent = "Player"; // You can replace with actual username
+              document.getElementById('highScore').textContent = stats.highScore;
+              document.getElementById('lowScore').textContent = stats.lowScore;
+              document.getElementById('correctCount').textContent = stats.totalCorrect;
+              document.getElementById('wrongCount').textContent = stats.totalWrong;
+              
+            } else {
+              // ✅ Fallback: calculate statistics manually if not provided
+              const scores = data.scores; // ✅ Extract scores array
+
+              // ✅ If scores exist, calculate statistics
+              if (scores.length > 0) {
+                const playerName = "You"; // Replace with actual name if available
+                const highScore = Math.max(...scores.map(s => s.score)); // ✅ Highest score
+                const lowScore = Math.min(...scores.map(s => s.score));  // ✅ Lowest score
+                const correctCount = scores.reduce((sum, s) => sum + s.correct_answers, 0); // ✅ Total correct
+                const wrongCount = scores.reduce((sum, s) => sum + s.wrong_answers, 0);     // ✅ Total wrong
+
+                // ✅ Update scoreboard table with values
+                document.getElementById('playerName').textContent = playerName;
+                document.getElementById('highScore').textContent = highScore;
+                document.getElementById('lowScore').textContent = lowScore;
+                document.getElementById('correctCount').textContent = correctCount;
+                document.getElementById('wrongCount').textContent = wrongCount;
+              } else {
+                // ✅ If no scores yet, show placeholders
+                document.getElementById('playerName').textContent = "No scores yet";
+                document.getElementById('highScore').textContent = "-";
+                document.getElementById('lowScore').textContent = "-";
+                document.getElementById('correctCount').textContent = "0";
+                document.getElementById('wrongCount').textContent = "0";
+              }
+            }
+          } else {
+            // ✅ If backend returns error message
+            alert(data.message || "⚠️ Unable to load scores.");
+            
+            // ✅ Set default values on backend error
+            document.getElementById('playerName').textContent = "No scores yet";
+            document.getElementById('highScore').textContent = "0";
+            document.getElementById('lowScore').textContent = "0";
+            document.getElementById('correctCount').textContent = "0";
+            document.getElementById('wrongCount').textContent = "0";
+          }
+        })
+        .catch(error => {
+          // ✅ Handle fetch or parsing errors
+          console.error("Error fetching scores:", error); // ✅ Debug: log error
+          alert("❌ Failed to load scoreboard. Please make sure you're logged in.");
+          
+          // ✅ Set default values on network error
+          document.getElementById('playerName').textContent = "Error loading";
+          document.getElementById('highScore').textContent = "0";
+          document.getElementById('lowScore').textContent = "0";
+          document.getElementById('correctCount').textContent = "0";
+          document.getElementById('wrongCount').textContent = "0";
+        });
+    };
+  </script>
+
+</body>
+</html>

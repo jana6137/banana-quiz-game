@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Banana Quiz - Game</title>
+  <link rel="stylesheet" href="css/style.css"> 
+</head>
+<body>
+
+  <!-- Page header -->
+  <header>
+    <h1>🍌 Banana Quiz Game</h1>
+    <p>Try to solve the puzzle below by finding the correct value of the banana!</p>
+  </header>
+
+  <!-- Main game container -->
+  <main class="game-container">
+
+    <!-- Add this inside your game container for testing -->
+    <button onclick="manualSaveForTesting()" style="position:fixed; top:10px; right:10px; z-index:1000; background:red; color:white; padding:10px;">TEST SAVE</button>
+
+    <!-- Display the current level number -->  <!--Version Control-->
+    <section class="level-info">
+      <h2>Level <span id="levelNum"></span></h2>
+      <p>Each level has a time limit and a set number of puzzles. Good luck!</p>
+    </section>
+
+    <!-- Game area (hidden until a level starts) --> <!--Version Control-->
+    <section id="gameArea" style="display:none;">
+      <h3>Puzzle:</h3>
+      <img id="puzzleImage" alt="Puzzle will appear here">
+      <div>
+        <label>Your Answer:</label>
+        <input type="number" id="answerInput" placeholder="Enter your answer here" required>
+        <button onclick="checkAnswer()">Submit Answer</button> <!--Event Driven - Button Click-->
+      </div>
+      <p id="feedback"></p>
+      <p>Score: <span id="currentScore">0</span></p>
+      <p>Attempts Left: <span id="attemptsLeft">3</span></p>
+      <p>Time Remaining: <span id="timeRemaining">00:00</span></p>
+    </section>
+
+    <!-- Navigation buttons -->
+    <section class="navigation-section">
+      <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+      <button onclick="window.location.href='scoreboard.html'">View Scoreboard</button>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Banana Quiz Game | Powered by Banana API</p>
+  </footer>
+
+  <!-- JavaScript file for game logic -->
+  <script src="js/game.js"></script>
+
+</body>
+</html>

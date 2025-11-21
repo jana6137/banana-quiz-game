@@ -1,0 +1,42 @@
+# .gitignore for Banana Quiz Game
+
+# Database credentials (never commit sensitive data!)
+config.php
+.env
+*.env.local
+
+# Session files
+*session*
+*sess_*
+
+# Log files
+*.log
+error_log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+
+# Node.js (if you add any)
+node_modules/
+npm-debug.log*
+
+# Backup files
+*.backup
+*.bak
+
+# Runtime data
+pids
+*.pid
+*.seed

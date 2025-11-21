@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Banana Quiz Game</title>
+  <link rel="stylesheet" href="css/style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+
+  <!-- Page header -->
+  <header>
+    <h1>🍌 Banana Quiz Dashboard</h1>
+    <p>Select a level below to start your game!</p>
+  </header>
+
+  <!-- Mascot image on the left side -->
+  <aside class="side-panel">
+    <img src="images/mascot.png.png" class="side-img" alt="Banana Mascot Left">
+  </aside>
+
+  <!-- Main content area -->
+  <main>
+    <!-- Table showing levels, number of games, time limits, and start buttons --> <!--Version Control-->
+    <section class="levels-section">
+      <h2>Available Levels</h2>
+      <table class="levels-table" border="1" cellpadding="10" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Level</th>
+            <th>Games</th>
+            <th>Time Limit</th>
+            <th>Start</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Level 1 row -->
+          <tr>
+            <td>1</td>
+            <td>5</td>
+            <td>20 minutes</td>
+            <td>
+              <button onclick="window.location.href='game.html?level=1'">Start Level 1</button> <!--Event Driven - Button Click-->
+            </td>
+          </tr>
+          <!-- Level 2 row -->
+          <tr>
+            <td>2</td>
+            <td>7</td>
+            <td>15 minutes</td>
+            <td>
+              <button onclick="window.location.href='game.html?level=2'">Start Level 2</button>
+            </td>
+          </tr>
+          <!-- Level 3 row -->
+          <tr>
+            <td>3</td>
+            <td>9</td>
+            <td>10 minutes</td>
+            <td>
+              <button onclick="window.location.href='game.html?level=3'">Start Level 3</button>
+            </td>
+          </tr>
+          <!-- Level 4 row -->
+          <tr>
+            <td>4</td>
+            <td>11</td>
+            <td>5 minutes</td>
+            <td>
+              <button onclick="window.location.href='game.html?level=4'">Start Level 4</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  <!-- Mascot image on the right side -->
+  <aside class="side-panel">
+    <img src="images/mascot.png.png" class="side-img" alt="Banana Mascot Right">
+  </aside>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Banana Quiz Game | Designed for fun and learning</p>
+  </footer>
+
+  <!-- JavaScript file for game logic -->
+  <script src="js/game.js"></script>
+
+</body>
+</html>

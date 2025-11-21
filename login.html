@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Banana Quiz Game</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Main container for the login form -->
+  <div class="login-container">
+    <h1>🍌 Welcome Back to Banana Quiz!</h1>
+    <p>Please log in to continue playing and track your scores.</p>
+
+    <!-- Login form starts here --> <!--Version Control-->
+    <form id="loginForm" autocomplete="on"> <!--Event Driven - Form Submission-->
+
+      <!-- Username input field -->
+      <div class="form-group">
+        <label for="username">Username:</label> 
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <!-- Password input field -->
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <!-- Submit button -->
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+
+      <!-- Link to registration page -->
+      <div class="form-group">
+        <p>Don't have an account yet?
+          <a href="register.html">Click here to register</a>
+        </p>
+      </div>
+
+    </form>
+    <!-- End of login form -->
+
+    <!-- OTP Verification Section (initially hidden) -->
+    <div id="otpSection" style="display: none;">
+      <h2>🔐 OTP Verification</h2>
+      <p>We've sent a 6-digit verification code to your registered email. Please enter it below:</p>
+      
+      <!-- OTP verification form -->
+      <form id="otpForm">
+        <div class="form-group">
+          <label for="otp">Enter OTP Code:</label>
+          <input type="text" id="otp" name="otp" placeholder="Enter 6-digit code" maxlength="6" required 
+                 pattern="[0-9]{6}" title="Please enter exactly 6 digits">
+        </div>
+        
+        <div class="form-group">
+          <button type="submit">Verify OTP & Continue</button>
+        </div>
+        
+        <div class="form-group">
+          <p>Didn't receive the code? <a href="#" id="resendOtp">Resend OTP</a></p>
+        </div>
+      </form>
+    </div>
+
+    <!-- ✅ ADDED: Message display area for better user feedback -->
+    <div id="messageArea" style="margin-top: 20px;"></div>
+
+  </div>
+
+  <!-- JavaScript for OTP handling -->
+  <script>
+    // ✅ ADDED: Function to display messages to user with color coding
+    function showMessage(message, isError = false) {
+      const messageArea = document.getElementById('messageArea');
+      messageArea.innerHTML = `<p style="color: ${isError ? 'red' : 'green'}; font-weight: bold;">${message}</p>`;
+      messageArea.style.display = 'block';
+    }
+
+    // Handle initial login form submission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // ✅ ADDED: Show loading state for better user experience
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.textContent = 'Logging in...';
+      submitBtn.disabled = true;
+      
+      // Send login request
+      fetch('php/login.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+      })
+      .then(response => response.text())
+      .then(data => {
+        if (data.includes("OTP sent")) {
+          // ✅ IMPROVED: Show OTP section and hide login form with smooth transition
+          document.getElementById('loginForm').style.display = 'none';
+          document.getElementById('otpSection').style.display = 'block';
+          
+          // ✅ ADDED: Show the OTP number for testing (in production, this would be sent via email)
+          showMessage(data);
+          
+          // ✅ ADDED: Auto-focus on OTP input field for better usability
+          document.getElementById('otp').focus();
+        } else {
+          // ✅ IMPROVED: Show error message in message area instead of alert
+          showMessage(data, true);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // ✅ IMPROVED: Better error message display
+        showMessage('❌ An error occurred during login. Please try again.', true);
+      })
+      .finally(() => {
+        // ✅ ADDED: Reset button state after request completes
+        submitBtn.textContent = 'Login';
+        submitBtn.disabled = false;
+      });
+    });
+
+    // Handle OTP verification
+    document.getElementById('otpForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const otp = document.getElementById('otp').value;
+      const username = document.getElementById('username').value;
+      
+      // ✅ ADDED: Validate OTP format before sending to server
+      if (!/^\d{6}$/.test(otp)) {
+        showMessage('⚠️ Please enter a valid 6-digit OTP code.', true);
+        return;
+      }
+      
+      // ✅ ADDED: Show loading state during verification
+      const verifyBtn = this.querySelector('button[type="submit"]');
+      verifyBtn.textContent = 'Verifying...';
+      verifyBtn.disabled = true;
+      
+      // Send OTP verification request
+      fetch('php/verify_otp.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `username=${encodeURIComponent(username)}&otp=${encodeURIComponent(otp)}`
+      })
+      .then(response => response.text())
+      .then(data => {
+        if (data.includes("success")) {
+          // ✅ IMPROVED: Show success message and redirect with delay for better UX
+          showMessage('✅ OTP verified successfully! Redirecting to dashboard...');
+          
+          // ✅ ADDED: Delay redirect to allow user to see success message
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 1500);
+        } else {
+          // ✅ IMPROVED: Show error message in message area
+          showMessage(data, true);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // ✅ IMPROVED: Better error message display
+        showMessage('❌ An error occurred during OTP verification. Please try again.', true);
+      })
+      .finally(() => {
+        // ✅ ADDED: Reset button state after request completes
+        verifyBtn.textContent = 'Verify OTP & Continue';
+        verifyBtn.disabled = false;
+      });
+    });
+
+    // Handle OTP resend
+    document.getElementById('resendOtp').addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      
+      // ✅ ADDED: Validate username exists before resending
+      if (!username) {
+        showMessage('⚠️ Please enter your username first.', true);
+        return;
+      }
+      
+      // ✅ ADDED: Show loading state during resend
+      const resendLink = this;
+      resendLink.textContent = 'Sending...';
+      resendLink.style.pointerEvents = 'none';
+      
+      // Send OTP resend request
+      fetch('php/resend_otp.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `username=${encodeURIComponent(username)}`
+      })
+      .then(response => response.text())
+      .then(data => {
+        // ✅ IMPROVED: Show message in message area instead of alert
+        showMessage(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // ✅ IMPROVED: Better error message display
+        showMessage('❌ An error occurred while resending OTP. Please try again.', true);
+      })
+      .finally(() => {
+        // ✅ ADDED: Reset link state after request completes
+        resendLink.textContent = 'Resend OTP';
+        resendLink.style.pointerEvents = 'auto';
+      });
+    });
+
+    // ✅ ADDED: Auto-focus on OTP input when OTP section becomes visible
+    // This helps improve user experience by automatically focusing on the OTP field
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const otpSection = document.getElementById('otpSection');
+          if (otpSection.style.display === 'block') {
+            document.getElementById('otp').focus();
+          }
+        }
+      });
+    });
+    
+    observer.observe(document.getElementById('otpSection'), {
+      attributes: true,
+      attributeFilter: ['style']
+    });
+
+  </script>
+  
+</body>
+</html>

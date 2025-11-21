@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Banana Quiz Game</title>
+  <link rel="stylesheet" href="css/style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+
+  <!-- Main container for the registration form -->
+  <div class="register-container">
+    <h1>🍌 Create Your Banana Quiz Account</h1>
+    <p>Fill in the details below to register and start playing!</p>
+
+    <!-- Registration form starts here --> <!--Version Control-->
+    <form action="php/register.php" method="POST" autocomplete="on">
+
+      <!-- Email input field -->
+      <div class="form-group">
+        <label for="email">Email Address:</label>
+        <!-- 'type=email' ensures proper validation -->
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+
+      <!-- Username input field -->
+      <div class="form-group">
+        <label for="username">Choose a Username:</label>
+        <!-- 'required' ensures the field cannot be left empty -->
+        <input type="text" id="username" name="username" placeholder="Enter a unique username" required>
+      </div>
+
+      <!-- Password input field -->
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <!-- 'type=password' hides the characters -->
+        <input type="password" id="password" name="password" placeholder="Enter a strong password" required>
+      </div>
+
+      <!-- Confirm password input field -->
+      <div class="form-group">
+        <label for="confirm_password">Confirm Password:</label>
+        <!-- Helps prevent typos in password -->
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
+      </div>
+
+      <!-- Submit button -->
+      <div class="form-group">
+        <button type="submit">Register</button>
+      </div>
+
+      <!-- Link to login page -->
+      <div class="form-group">
+        <p>Already have an account?
+          <a href="login.html">Click here to login</a>
+        </p>
+      </div>
+
+    </form>
+    <!-- End of registration form -->
+
+  </div>
+
+</body>
+</html>

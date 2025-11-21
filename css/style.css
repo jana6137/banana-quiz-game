@@ -1,0 +1,224 @@
+/* ================================
+   Global Styles
+   ================================ */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* ================================
+   Headings
+   ================================ */
+h1, h2, h3 {
+  font-family: 'Trebuchet MS', sans-serif;
+  margin: 20px 0;
+  color: #222;
+}
+
+.title {
+  font-size: 3em;
+  font-weight: bold;
+  text-shadow: 2px 2px #f0c000;
+  margin-top: 40px;
+}
+
+/* ================================
+   Images
+   ================================ */
+.side-img {
+  width: 120px;
+  margin: 15px;
+  display: inline-block;
+}
+
+.trophy-img {
+  width: 150px;
+  margin-top: 20px;
+}
+
+/* ================================
+   Forms (Login/Register)
+   ================================ */
+form {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+  width: 40%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+button {
+  background-color: #f0c000;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #ffc107;
+}
+
+/* ================================
+   OTP Verification Styles
+   ================================ */
+#otpSection {
+  background: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-width: 400px;
+  border: 2px solid #f0c000;
+}
+
+#otpSection h2 {
+  color: #f0c000;
+  margin-bottom: 15px;
+}
+
+#otpSection p {
+  margin-bottom: 20px;
+  color: #666;
+}
+
+#otp {
+  font-size: 1.2em;
+  text-align: center;
+  letter-spacing: 5px;
+  font-weight: bold;
+}
+
+#messageArea {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  border-left: 4px solid #f0c000;
+  margin-top: 20px;
+}
+
+/* Loading state for buttons */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Resend OTP link styling */
+#resendOtp {
+  color: #f0c000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#resendOtp:hover {
+  text-decoration: underline;
+}
+
+/* ================================
+   Tables (Dashboard/Scoreboard)
+   ================================ */
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+th {
+  background-color: #f0c000;
+  color: #333;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* ================================
+   Feedback Messages <!-- Interesting Features - User-Friendly Design-->
+   ================================ */
+#feedback {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+#feedback.correct {
+  color: green;
+}
+
+#feedback.wrong {
+  color: red;
+}
+
+/* ================================
+   Footer
+   ================================ */
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  background: #333;
+  color: #fff;
+  font-size: 0.9em;
+}
+
+/* ================================
+   Level Buttons Section
+   ================================ */
+.level-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.level-buttons button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #fdd835;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.level-buttons button:hover {
+  background-color: #fbc02d;
+}
