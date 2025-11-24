@@ -1,8 +1,8 @@
-# 🍌 Banana Quiz Game
+# Banana Quiz Game
 
 A fun and interactive quiz game built with HTML, CSS, JavaScript, and PHP featuring math puzzles and multiple difficulty levels.
 
-## 🎯 Features
+## Features
 
 - **User Authentication** with OTP verification
 - **Multiple Difficulty Levels** with increasing challenge
@@ -11,7 +11,7 @@ A fun and interactive quiz game built with HTML, CSS, JavaScript, and PHP featur
 - **Responsive Design** works on all devices
 - **Secure Session Management** with PHP
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Web server (Apache/Nginx)
