@@ -1,4 +1,4 @@
-/*Configuration: Level settings <!-- Interesting Features - Different Difficulty Levels--> */
+6/*Configuration: Level settings <!-- Interesting Features - Different Difficulty Levels--> */
 const levelConfig = {
   1: { games: 5, time: 20 * 60 },
   2: { games: 7, time: 15 * 60 },
@@ -193,15 +193,15 @@ function saveScore() {
       alert("Score saved! Redirecting to scoreboard...");
       window.location.href = 'scoreboard.html';
     } else {
-      console.error("❌ Score save failed. PHP returned:", data);
-      alert("❌ Failed to save score. Error: " + data);
+      console.error(" Score save failed. PHP returned:", data);
+      alert("Failed to save score. Error: " + data);
       // Still redirect to show something
       window.location.href = 'scoreboard.html';
     }
   })
   .catch(error => {
-    console.error("🚨 Network error saving score:", error);
-    alert("❌ Network error while saving score: " + error.message);
+    console.error(" Network error saving score:", error);
+    alert(" Network error while saving score: " + error.message);
     window.location.href = 'scoreboard.html';
   });
 }
@@ -209,7 +209,7 @@ function saveScore() {
 /* Temporary function: manualSaveForTesting
    Purpose: Manually trigger score saving for testing */
 function manualSaveForTesting() {
-  console.log("🔧 MANUAL SAVE TRIGGERED FOR TESTING");
+  console.log(" MANUAL SAVE TRIGGERED FOR TESTING");
   currentScore = 50; // Set a test score
   correctCount = 5;  // Set test correct answers
   wrongCount = 2;    // Set test wrong answers
